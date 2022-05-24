@@ -1,0 +1,20 @@
+
+[tool.poetry]
+name = "workshops-data-glance-through-docker"
+version = "0.1.0"
+description = "Workshops to enlight the data proccessing of GPS tracking data"
+authors = ["Daniel Restrepo Hincapie"]
+license = "file:LICENSE"
+
+[tool.poetry.dependencies]
+python = "3.9.12"
+pyspark = "3.2.1"
+findspark = "^2.0.1"
+matplotlib = "^3.5.2"
+seaborn = "^0.11.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
