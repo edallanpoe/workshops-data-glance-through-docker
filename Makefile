@@ -7,11 +7,14 @@ dev:
 build:
 	docker build --memory 2048 -t workshop:latest -f ./docker/Dockerfile .
 
+server:
+	docker run \
+		-it --rm \
+		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
+		-p 8000:8000 -p 4040:4040\
+		workshop:latest
+
 run:
 	docker run \
 		-it --rm \
-		--add-host=docker.for.mac.host.internal:host-gateway \
-		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
-		-p=8888:8888 -p=4040:4040 \
-		--network=bridge \
-		workshop:latest
+		-
