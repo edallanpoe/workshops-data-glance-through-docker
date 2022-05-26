@@ -14,7 +14,39 @@ server:
 		-p 8000:8000 -p 4040:4040\
 		workshop:latest
 
+.PHONY: clean lint mypy lint dist
+
+clean: clean-envs clean-pyc clean-output
+
+clean-envs:
+	rm -rf env
+
+clean-pyc:
+	find . -name '*.pyc' -exec rm -fr {} +
+	find . -name '*.pyo' -exec rm -fr {} +
+	find . -name '*~' -exec rm -fr {} +
+	find . -name '__pycache__' -exec rm -fr {} +	 
+
+clean-mypy:
+	find . -name '.mypy_cache' -exec rm -fr {} +
+
+clean-output:
+	rm -rfv $(etl_path)/data/output/images/*
+	rm -rfv $(etl_path)/data/output/files/*
+	rm -rfv $(etl_path)/data/output/results/parquet/*
+	rm -rfv $(etl_path)/data/output/results/pdf/*
+	rm -rfv $(etl_path)/data/output/results/pictures/*
+
+lint:
+	pflake8 $(path_code)
+
+mypy:
+	@mypy $(path_code)
+
 run:
 	docker run \
 		-it --rm \
-		-
+		-v=$(PWD)/results/:/opt/etl/data/output/results/:rw \
+		--entrypoint /bin/bash \
+		workshop:latest \
+		/opt/etl/workshop.sh
