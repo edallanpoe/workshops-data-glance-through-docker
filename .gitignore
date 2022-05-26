@@ -131,3 +131,6 @@ dmypy.json
 # VSCode junk
 .vscode/
 .DS_Store
+
+# ETL byproduct
+./results/
