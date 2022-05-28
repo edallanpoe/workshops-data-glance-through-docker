@@ -133,4 +133,4 @@ dmypy.json
 .DS_Store
 
 # ETL byproduct
-./results/
+results/*

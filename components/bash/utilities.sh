@@ -92,7 +92,7 @@ function run_process(){
         --event-date $date_gpx \
         --output "$ETL_PATH/data/output"
 
-   if [ $? -ne 0 ]; then
+	if [ $? -ne 0 ]; then
 		echo_color  $CONST_COLOR_RED  "[$gpx] ......... [FAIL]"
 		APP_STATE=$CONST_APP_ERROR
 	else
@@ -104,9 +104,9 @@ function run_spark(){
 	app_path=$1
 	spark-submit --master local[4] --name demo \
 		$ETL_PATH/components/spark/spark-job.py \
-  		$app_path/data/output/files \
-  		$app_path/data/output/results \
-  		$app_path/data/parametric/gas_consumption.json
+		$app_path/data/output/files \
+		$app_path/data/output/results \
+		$app_path/data/parametric/gas_consumption.json
 }
 
 function press_to_continue(){
@@ -133,10 +133,10 @@ function run_report(){
 	echo_color  $CONST_COLOR_YELLOW "validating ......... [REPORTS]"
 
     python $app/components/python/app.py generate-report \
-    	--images-path  $app/data/output/images \
-    	--consolidated-file $app/data/output/results/parquet/consolidated/*.parquet
+		--images-path  $app/data/output/images \
+		--consolidated-file $app/data/output/results/parquet/consolidated/*.parquet
 
-   if [ $? -ne 0 ]; then
+	if [ $? -ne 0 ]; then
 		echo_color  $CONST_COLOR_RED  "[REPORTS] ......... [FAIL]"
 		APP_STATE=$CONST_APP_ERROR
 	else

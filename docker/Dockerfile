@@ -34,7 +34,7 @@ RUN ln -s /opt/spark-${SPARK_VERSION}-bin-hadoop2.7 /usr/local/spark
 
 # Creating the folder that are going to be used.
 RUN mkdir -p /tmp/spark/events /opt/etl/data/output/results && \
-    chmod -R +rwx /tmp /opt/etl /opt/etl/data/output/results
+    chmod -R 750 /tmp /opt/etl /opt/etl/data/output/results
 
 # Setting the environment variables needed for Spark to work.
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64

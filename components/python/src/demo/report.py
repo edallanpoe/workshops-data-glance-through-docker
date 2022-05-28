@@ -1,3 +1,4 @@
+from tabnanny import verbose
 import pandas as pd
 import jinja2
 import pdfkit
@@ -30,7 +31,8 @@ class GeneratePdf:
             html,
             pdf_info["pdf"],
             options=self.__app.config.pdf_properties,
-            configuration=config
+            configuration=config,
+            verbose=True
         )
 
     def __get_rows_complements(self, nro_images: int):
