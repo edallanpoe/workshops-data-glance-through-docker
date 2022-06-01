@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP=$(dirname $(realpath $0))
+APP=${PWD}
 
 source $APP/components/bash/utilities.sh
 source $APP/components/bash/printer.sh

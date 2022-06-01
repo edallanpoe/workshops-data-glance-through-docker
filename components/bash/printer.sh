@@ -1,5 +1,5 @@
 
-APP=$(dirname $(realpath $0))
+APP=${PWD}
 
 source $APP/components/bash/utilities.sh
 
@@ -110,9 +110,10 @@ function stage_4(){
     echo "" 
     echo "please open in your browser"
     echo ""
-    echo "      jupyter notebook ----> http://localhost:8888/workshop/"
+    echo "      jupyter notebook ----> http://localhost:8000/workshop/"
     echo "      spark history    ----> http://localhost:4040/"
     echo "      pdf              ----> $(pwd)/data/output/results/pdf"
+    echo "                       └───> $(pwd)/results/pdf"
     echo ""
 }                                           
                                                    

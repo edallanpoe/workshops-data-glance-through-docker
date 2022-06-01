@@ -6,7 +6,7 @@ CONST_COLOR_BLUE=2
 CONST_COLOR_GREEN=3
 CONST_COLOR_RED=4
 CONST_COLOR_WHITE=5
-ETL_PATH=/opt/etl
+ETL_PATH=${PWD}
 
 
 function echo_color(){
@@ -28,18 +28,17 @@ function echo_color(){
 
 function execute_code(){
 	path_code=$1
-	echo $path_code
 	APP_STATE=$CONST_APP_DONE
 
 	# code validation
 	sep_step
 	echo_color  $CONST_COLOR_YELLOW "[STEP 01] cleaning pyc files ......... [VALIDATING]"
-	cd $ETL_PATH ; make clean etl_path=$ETL_PATH ; cd -
+	make clean etl_path=$ETL_PATH
 	echo_color  $CONST_COLOR_GREEN  "[STEP 01] ............................ [OK]"
 
 	sep_step
 	echo_color  $CONST_COLOR_YELLOW "[STEP 02] validating mypy ............ [VALIDATING]"
-	cd $ETL_PATH ; make mypy path_code=$path_code ; cd -
+	make mypy path_code=$path_code
 	if [ $? -eq 2 ]; then
 		echo_color  $CONST_COLOR_RED  "[STEP 02] ............................ [FAIL]"
 		APP_STATE=$CONST_APP_ERROR
@@ -49,7 +48,7 @@ function execute_code(){
 
 	sep_step
 	echo_color  $CONST_COLOR_YELLOW "[STEP 03] validating flake8 .......... [VALIDATING]"
-	cd $ETL_PATH ; make lint path_code=$path_code ; cd -
+	make lint path_code=$path_code
 	if [ $? -eq 2 ]; then
 		echo_color  $CONST_COLOR_RED  "[STEP 03] ............................ [FAIL]"
 		APP_STATE=$CONST_APP_ERROR
@@ -135,6 +134,8 @@ function run_report(){
     python $app/components/python/app.py generate-report \
 		--images-path  $app/data/output/images \
 		--consolidated-file $app/data/output/results/parquet/consolidated/*.parquet
+
+	cp -rfv $app/data/output/results/* $ETL_PATH/results
 
 	if [ $? -ne 0 ]; then
 		echo_color  $CONST_COLOR_RED  "[REPORTS] ......... [FAIL]"

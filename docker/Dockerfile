@@ -44,7 +44,7 @@ ENV PATH=${SPARK_HOME}/bin:$HOME/.local/bin:$PATH
 
 # Copying the Spark custom configuration.
 COPY ./docker/spark-defaults.conf ${SPARK_HOME}/conf/
-COPY ./workshop.sh ./Makefile ./pyproject.toml /opt/etl/
+COPY ./Makefile ./pyproject.toml /opt/etl/
 COPY ./components/ /opt/etl/components/ 
 COPY ./data/ /opt/etl/data/ 
 

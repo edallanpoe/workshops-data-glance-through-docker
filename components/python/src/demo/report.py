@@ -1,4 +1,5 @@
-from tabnanny import verbose
+"""Module for building the final report."""
+
 import pandas as pd
 import jinja2
 import pdfkit

@@ -43,11 +43,12 @@ lint:
 mypy:
 	@mypy $(path_code)
 
-run:
+etl:
 	docker run \
 		-it --rm \
-		-v=$(PWD)/results/:/opt/etl/data/output/results/:rw \
+		-w /opt/etl \
+		-v $(PWD)/results/:/opt/etl/results/:rw \
 		-p 4040:4040 \
 		--entrypoint /bin/bash \
 		workshop:latest \
-		/opt/etl/workshop.sh
+		/opt/etl/components/bash/workshop.sh
