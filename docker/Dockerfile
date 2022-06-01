@@ -32,21 +32,22 @@ RUN pip install -r /opt/conf/requirements.txt && \
 RUN curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz | tar -zx
 RUN ln -s /opt/spark-${SPARK_VERSION}-bin-hadoop2.7 /usr/local/spark
 
-# Creating the folder that are going to be used.
-RUN mkdir -p /tmp/spark/events /opt/etl/data/output/results && \
-    chmod -R 750 /tmp /opt/etl /opt/etl/data/output/results
-
-# Setting the environment variables needed for Spark to work.
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64
-ENV SPARK_HOME=/opt/spark-${SPARK_VERSION}-bin-hadoop2.7
-ENV SPARK_OPTS=--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info 
-ENV PATH=${SPARK_HOME}/bin:$HOME/.local/bin:$PATH
-
 # Copying the Spark custom configuration.
 COPY ./docker/spark-defaults.conf ${SPARK_HOME}/conf/
 COPY ./Makefile ./pyproject.toml /opt/etl/
 COPY ./components/ /opt/etl/components/ 
-COPY ./data/ /opt/etl/data/ 
+COPY ./data/ /opt/etl/data/
+COPY ./docker/entrypoint.sh /opt/
+
+# Creating the folder that are going to be used.
+RUN mkdir -p /tmp/spark/events /opt/etl/data/output/results && \
+    chmod -R 750 /tmp /opt/etl /opt/etl/data/output/results /opt/entrypoint.sh /opt/etl/components/
+
+# Setting the environment variables needed for Spark to work.
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64
+ENV SPARK_HOME=/opt/spark-${SPARK_VERSION}-bin-hadoop2.7
+ENV SPARK_OPTS=--driver-java-options=-Xms1024M --driver-java-options=-Xmx2048M --driver-java-options=-Dlog4j.logLevel=info 
+ENV PATH=${SPARK_HOME}/bin:$HOME/.local/bin:$PATH
 
 # Opening port for Spark History server
 EXPOSE 4040
@@ -54,7 +55,5 @@ EXPOSE 4040
 # Opening port for Jupyter server
 EXPOSE 8000 
 
-# Defining the command that is going to be executed once the container startup,
-# this command can be overriden once a new entrypoint is defined within the 
-# docker run command. 
-CMD [ "python", "-m", "jupyter", "notebook", "--config=/opt/conf/jupyter_notebook_config.py" ]
+# Sets the entrypoint
+ENTRYPOINT [ "/opt/entrypoint.sh" ]

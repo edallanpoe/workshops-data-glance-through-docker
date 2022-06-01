@@ -12,7 +12,7 @@ notebook:
 		-it --rm \
 		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
 		-p 8000:8000 -p 4040:4040 \
-		workshop:latest
+		workshop:latest jupyter
 
 .PHONY: clean lint mypy lint dist
 
@@ -49,6 +49,4 @@ etl:
 		-w /opt/etl \
 		-v $(PWD)/results/:/opt/etl/results/:rw \
 		-p 4040:4040 \
-		--entrypoint /bin/bash \
-		workshop:latest \
-		/opt/etl/components/bash/workshop.sh
+		workshop:latest etl
