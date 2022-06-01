@@ -1,10 +1,7 @@
 # workshops-data-glance-through-docker
-Offer a first approach to the data world by using technologies that have a huge impact in the industry. Docker and PySpark
+Offer a first approach to the data world by using technologies that have a huge impact in the industry. Docker and PySpark.
 
-
-## TODO
-Explicar el Python venv
-
+This also contains an example of a data pipeline which transforms a GPS trace
 
 ## Prerequisites
 For more information please refer to the links below:

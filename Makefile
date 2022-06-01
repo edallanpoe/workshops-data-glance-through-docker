@@ -7,7 +7,7 @@ dev:
 build:
 	docker build --memory 2048 -t workshop:latest -f ./docker/Dockerfile .
 
-server:
+notebook:
 	docker run \
 		-it --rm \
 		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
