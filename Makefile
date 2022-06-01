@@ -11,7 +11,7 @@ notebook:
 	docker run \
 		-it --rm \
 		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
-		-p 8000:8000 -p 4040:4040\
+		-p 8000:8000 -p 4040:4040 \
 		workshop:latest
 
 .PHONY: clean lint mypy lint dist
@@ -47,6 +47,7 @@ run:
 	docker run \
 		-it --rm \
 		-v=$(PWD)/results/:/opt/etl/data/output/results/:rw \
+		-p 4040:4040 \
 		--entrypoint /bin/bash \
 		workshop:latest \
 		/opt/etl/workshop.sh
