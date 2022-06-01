@@ -7,11 +7,46 @@ dev:
 build:
 	docker build --memory 2048 -t workshop:latest -f ./docker/Dockerfile .
 
-run:
+notebook:
 	docker run \
 		-it --rm \
-		--add-host=docker.for.mac.host.internal:host-gateway \
 		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
-		-p=8888:8888 -p=4040:4040 \
-		--network=bridge \
-		workshop:latest
+		-p 8000:8000 -p 4040:4040 \
+		workshop:latest jupyter
+
+.PHONY: clean lint mypy lint dist
+
+clean: clean-envs clean-pyc clean-output
+
+clean-envs:
+	rm -rf env
+
+clean-pyc:
+	find . -name '*.pyc' -exec rm -fr {} +
+	find . -name '*.pyo' -exec rm -fr {} +
+	find . -name '*~' -exec rm -fr {} +
+	find . -name '__pycache__' -exec rm -fr {} +	 
+
+clean-mypy:
+	find . -name '.mypy_cache' -exec rm -fr {} +
+
+clean-output:
+	rm -rfv $(etl_path)/data/output/images/*
+	rm -rfv $(etl_path)/data/output/files/*
+	rm -rfv $(etl_path)/data/output/results/parquet/*
+	rm -rfv $(etl_path)/data/output/results/pdf/*
+	rm -rfv $(etl_path)/data/output/results/pictures/*
+
+lint:
+	pflake8 $(path_code)
+
+mypy:
+	@mypy $(path_code)
+
+etl:
+	docker run \
+		-it --rm \
+		-w /opt/etl \
+		-v $(PWD)/results/:/opt/etl/results/:rw \
+		-p 4040:4040 \
+		workshop:latest etl
