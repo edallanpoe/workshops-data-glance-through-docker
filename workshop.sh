@@ -40,6 +40,7 @@ function run_stage_2(){
    echo "SPARK"
    echo ""
    press_to_continue
+   ${SPARK_HOME}/sbin/start-history-server.sh --properties-file ${SPARK_HOME}/conf/spark-defaults.conf
    run_spark $APP
    press_to_continue
 }
@@ -57,6 +58,7 @@ function run_stage_4(){
    echo ""
    tree $APP/data/output/results
    secure_exit
+   ${SPARK_HOME}/sbin/stop-history-server.sh
 }
 
 run_welcome
