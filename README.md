@@ -1,7 +1,31 @@
 # workshops-data-glance-through-docker
 Offer a first approach to the data world by using technologies that have a huge impact in the industry. Docker and PySpark.
 
-This also contains an example of a data pipeline which transforms a GPS trace
+The repo works around a Docker Image that supports two different components, one for running a Jupyter notebook server integrated with Pyspark and the other to represent a data pipeline from end to end to extract, transform and load a dataset based on a track of geopositions.
+
+# Jupyter Component
+This component is designed to run a Jupyter Server that communicates with Apache Spark in its Python variation (`PySpark`) which enables to work with distributed computional power using the Jupyter notebooks as interface to do so.
+
+The specific files required by this component are:
+#### ``docker/jupyter_notebook_config.py``
+This Python script set the necessary configurations to start the Jupyter Server and bind the listinening port between the container and the host.
+
+#### ``docker/requirements.txt``
+Contains the list of the libraries required by both components to work.
+
+#### ``docker/spark-defaults.conf``
+Spark Application, UI, and History Server configurations.
+
+#### ``notebooks/...``
+Folder where all the Jupyter notebooks are stored, this also is bound with host as a shared volume, at the container side `/opt/notebooks/` which is linked which the host side in `./notebooks/`.
+
+# Demo ETL
+![](docs/flow_demo_etl.png)
+...
+
+# Python Project Environment
+
+
 
 ## Prerequisites
 For more information please refer to the links below:
@@ -18,8 +42,8 @@ brew install GDAL
 Using pip install:
 ```bash
 python -m pip install --upgrade pip wheel
-pip install Fiona gdal
 pip install pyproj --no-binary pyproj
+pip install Fiona gdal
 ```
 
 Now, you can install the librarry ``geopandas`` using ``poetry``.
@@ -41,7 +65,7 @@ pip install pyproj --no-binary pyproj
 Now, you can install the librarry ``geopandas`` using ``poetry``.
 
 
-## LUISVASV
+# LUISVASV
 los archivos deben de tener la estructura interna de
 
 instalar ubuntu
