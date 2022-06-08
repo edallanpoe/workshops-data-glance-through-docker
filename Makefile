@@ -50,3 +50,10 @@ notebook:
 		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
 		-p 8000:8000 -p 4040:4040 \
 		workshop:latest jupyter
+
+shell:
+	docker run \
+		-it --rm \
+		-v=$(PWD)/notebooks/:/opt/notebooks/:rw \
+		-p 8000:8000 -p 4040:4040 \
+		workshop:latest

@@ -12,7 +12,7 @@ function exec_action(){
         /bin/bash -c "$ETL"
     else
         echo "Usage: $0 jupyter|etl"
-        exit 1
+        /bin/bash
     fi
 }
 
