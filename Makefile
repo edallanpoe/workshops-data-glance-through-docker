@@ -34,7 +34,7 @@ mypy:
 	@mypy $(path_code)
 
 build:
-	docker build --memory 2048 -t workshop:latest -f ./docker/Dockerfile .
+	docker build --build-arg PLATFORM=linux/arm64 --memory 2048 -t workshop:latest -f ./docker/Dockerfile .
 
 etl:
 	docker run \

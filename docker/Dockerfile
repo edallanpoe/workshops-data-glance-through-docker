@@ -1,17 +1,25 @@
+# Allows to create different builds using different platforms if the base image multiple platforms.
+# ARG Ref: https://docs.docker.com/engine/reference/builder/#arg
+ARG PLATFORM
+
 # Using Python v3.9.13 as base image.
-# Ref: https://docs.docker.com/engine/reference/builder/#from
-FROM python:3.9
+# Creating a base image: https://docs.docker.com/develop/develop-images/baseimages/
+# FROM Ref: https://docs.docker.com/engine/reference/builder/#from
+# Image in Docker Hub: https://hub.docker.com/layers/python/library/python/3.9/images/sha256-2c9cc527cde7305aad12bbdcfb3b5ee51d6e95d8fae91054a1d960942e385521?context=explore
+FROM --platform=${PLATFORM} python:3.9
 
 # Defining Apache Spark framework.
-# Ref: https://docs.docker.com/engine/reference/builder/#env
+# ENV Ref: https://docs.docker.com/engine/reference/builder/#env
 ENV SPARK_VERSION=3.2.1
 
 # Setting the folder /opt as the working directory.
-# Ref: https://docs.docker.com/engine/reference/builder/#workdir
+# WORKDIR Ref: https://docs.docker.com/engine/reference/builder/#workdir
 WORKDIR /opt/
 
 # Downloading/Installing the linux dependencies required for the processes held here.
-# Ref: https://docs.docker.com/engine/reference/builder/#run
+# As this is a linux based image, it runs by default on /bin/sh shell.
+# But it can be changed by setting /bin/bash -c "command..." instead.
+# RUN Ref: https://docs.docker.com/engine/reference/builder/#run
 RUN apt update && \
     apt install -y wkhtmltopdf pv tree make binutils build-essential gcc openjdk-11-jdk openjdk-11-jre \
         ca-certificates-java libpq-dev libproj-dev proj-bin libgdal-dev gdal-bin && \
@@ -26,7 +34,7 @@ RUN python -m pip install --upgrade pip wheel && \
     pip install --upgrade setuptools
 
 # Copying the required files for supporting either the jupytr server and the ETL process.
-# Ref: https://docs.docker.com/engine/reference/builder/#copy
+# COPY Ref: https://docs.docker.com/engine/reference/builder/#copy
 COPY ./docker/requirements.txt ./docker/jupyter_notebook_config.py /opt/conf/
 
 # Installing the applications Python dependencies.
@@ -55,12 +63,12 @@ ENV SPARK_OPTS=--driver-java-options=-Xms1024M --driver-java-options=-Xmx2048M -
 ENV PATH=${SPARK_HOME}/bin:$HOME/.local/bin:$PATH
 
 # Opening port for Spark History server
-# Ref: https://docs.docker.com/engine/reference/builder/#expose
+# EXPOSE Ref: https://docs.docker.com/engine/reference/builder/#expose
 EXPOSE 4040
 
 # Opening port for Jupyter server
 EXPOSE 8000 
 
 # Sets the entrypoint
-# Ref: https://docs.docker.com/engine/reference/builder/#entrypoint
+# ENTRYPOINT Ref: https://docs.docker.com/engine/reference/builder/#entrypoint
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
